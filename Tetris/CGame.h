@@ -17,7 +17,9 @@ namespace corn {
 
 		void Init();
 
-		void ReInit();
+		void InitShape();
+
+		void Restart();
 
 		CShape& GetCurrShape();
 		const CShape& GetCurrShape() const;
@@ -36,7 +38,10 @@ namespace corn {
 
 		BOOL Move(Vector2D v);
 
-		
+		void MakeShapeInBoard();
+
+		void SetIsGameOver(BOOL isGameOver);
+		BOOL GetIsGameOver();
 	private:
 		BOOL IsNewShape() const;
 		void SetIsNewShape(BOOL isNew);
@@ -46,5 +51,6 @@ namespace corn {
 		CBoard m_board;
 		CShape m_currShape;
 		BOOL m_isNewShape;
+		BOOL m_isGameOver;
 	};
 }

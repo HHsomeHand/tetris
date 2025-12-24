@@ -45,6 +45,12 @@
     <ClInclude Include="AutoHBrush.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FlashTimer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Tetris.rc">
@@ -77,6 +83,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="AutoHBrush.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FlashTimer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

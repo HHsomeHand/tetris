@@ -23,7 +23,7 @@ namespace corn {
 
 		static constexpr int SIZE_OF_PER_VARIANT = VARIANT_WIDTH * VARIANT_HEIGHT;
 		static constexpr int NUMBER_OF_VARIANTS_SHAPE_CONTAIN = 4;
-		static constexpr int TOTAL_SHAPES = 4;
+		static constexpr int TOTAL_SHAPES = 6;
 		static constexpr int SIZE_OF_PER_SHAPE = SIZE_OF_PER_VARIANT * NUMBER_OF_VARIANTS_SHAPE_CONTAIN;
 
 		static constexpr int SIZE_OF_PRESET_TABLE = SIZE_OF_PER_VARIANT * NUMBER_OF_VARIANTS_SHAPE_CONTAIN * TOTAL_SHAPES;

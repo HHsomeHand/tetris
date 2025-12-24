@@ -4,10 +4,13 @@
 #include <tchar.h>
 #include "corn_debug.h"
 #include "main.h"
+#include "corn_app_common.h"
+#include "FlashTimer.h"
 
 namespace corn {
 	CGame::CGame()
 	{
+		m_isGameOver = FALSE;
 		Init();
 	}
 
@@ -28,6 +31,8 @@ namespace corn {
 				SendMessage(hwnd, WM_GAME_OVER, 0, 0);
 				
 				MessageBox(NULL, _T("游戏结束"), _T("俄罗斯方块"), MB_OK);
+
+				SetIsGameOver(TRUE);
 			}
 			GetBoard().FixShape(GetCurrShape());
 
@@ -42,21 +47,33 @@ namespace corn {
 	{
 		SetCurrShape(CShape());
 
-		GetCurrShape().SetX(2); // TODO: Delete This
+		InitShape();
 
 		SetIsNewShape(TRUE);
 	}
 
 	void CGame::Init()
 	{
-		GetCurrShape().SetX(2); // TODO: Delete This
+		InitShape();
 	}
 
-	void CGame::ReInit()
+
+	// 初始化图形 x 轴位置
+	void CGame::InitShape()
+	{
+		GetCurrShape().SetX(
+			GetRandom(1, GetBoard().GetWidth() - GetCurrShape().GetWidth() - 1)
+		);
+
+	}
+
+	void CGame::Restart()
 	{
 		SetBoard(CBoard());
 
 		SwitchCurrShape();
+
+		SetIsGameOver(FALSE);
 	}
 
 	const CShape& CGame::GetCurrShape() const
@@ -91,21 +108,7 @@ namespace corn {
 	{
 		GetCurrShape().RotateRight();
 
-
-		for (int x_off = 0; x_off < 5; x_off++) {
-			for (int y_off = 0; y_off < 5; y_off++) {
-				for (int x_sign : {1, -1}) {
-					for (int y_sign : {1, -1}) {
-						if (Move({
-								.x = x_off * x_sign,
-								.y = y_off,
-							})) {
-							return;
-						}
-					}
-				}
-			}
-		}
+		MakeShapeInBoard();
 	}
 	void CGame::Paint(HDC hdc) const
 	{
@@ -133,6 +136,22 @@ namespace corn {
 				}
 			}
 		}
+
+		// 绘制文字
+		tstring fmt = FormatStr(
+			_T("当前速度: %d \n %s"),
+			1000 - timer.GetSpeed(),
+			timer.GetSpeed() == timer.GetMaxSpeed() ? _T("最大速度") : _T("")
+		);
+
+		RECT rc;
+		rc.left = 295;        
+		rc.top = 36;          
+		rc.right = rc.left + 100;     
+		rc.bottom = rc.top + 100; 
+
+		DrawText(hdc, fmt.c_str(), -1, &rc, DT_LEFT);
+
 	}
 	void CGame::PaintBlock(HDC hdc, int x, int y, HBRUSH hBrush) const
 	{
@@ -162,6 +181,31 @@ namespace corn {
 
 		SetIsNewShape(FALSE);
 		return TRUE;
+	}
+	void CGame::MakeShapeInBoard()
+	{
+		for (int x_off = 0; x_off < 5; x_off++) {
+			for (int y_off = 0; y_off < 5; y_off++) {
+				for (int x_sign : {1, -1}) {
+					for (int y_sign : {1, -1}) {
+						if (Move({
+								.x = x_off * x_sign,
+								.y = y_off,
+							})) {
+							return;
+						}
+					}
+				}
+			}
+		}
+	}
+	void CGame::SetIsGameOver(BOOL isGameOver)
+	{
+		m_isGameOver = isGameOver;
+	}
+	BOOL CGame::GetIsGameOver()
+	{
+		return m_isGameOver;
 	}
 	BOOL CGame::IsNewShape() const
 	{

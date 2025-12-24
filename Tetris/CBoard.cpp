@@ -1,6 +1,6 @@
 #include "CBoard.h"
 #include "AutoHBrush.h"
-
+#include "corn_debug.h"
 namespace corn {
 	CBoard::CBoard()
 	{
@@ -21,6 +21,9 @@ namespace corn {
 	}
 	BOOL CBoard::CanMove(const CShape& shape)
 	{
+		if (shape.GetX() >= GetWidth()) {
+			return FALSE;
+		}
 
 		for (int nHeight = 0; nHeight < shape.GetHeight(); nHeight++) {
 			for (int nWidth = 0; nWidth < shape.GetWidth(); nWidth++) {

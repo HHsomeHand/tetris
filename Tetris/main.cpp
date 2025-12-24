@@ -11,6 +11,8 @@
 #include "CGame.h"
 #include "CShape.h"
 #include "main.h"
+#include "map"
+#include "FlashTimer.h"
 
 using namespace corn;
 using namespace std;
@@ -21,7 +23,18 @@ HINSTANCE g_hInstance;
 
 HWND g_hWinMain;
 
-constexpr int TIMER_FLASH = 1;
+
+
+
+
+
+FlashTimer timer;
+
+void OnGameStart(HWND hDlg) {
+
+	timer.Start();
+}
+
 void MainDlg_OnClose(HWND hDlg)
 {
 	DestroyWindow(hDlg);
@@ -43,8 +56,9 @@ void SetWindowCenter(HWND hwnd)
 
 BOOL MainDlg_OnInitDialog(HWND hDlg, HWND hwndFocus, LPARAM lParam)
 {
+	timer.SetHwnd(hDlg);
 
-	SetTimer(hDlg, TIMER_FLASH, 400, NULL);
+	OnGameStart(hDlg);
 
     g_hWinMain = hDlg;
     
@@ -105,7 +119,17 @@ void MainDlg_OnCommand(HWND hDlg, int id, HWND hwndCtl, UINT codeNotify)
 	switch (id) {
 	case IDM_EXIT:
 		DestroyWindow(hDlg);
+		break;
 
+	case IDM_RESTART:
+		CGame::GetInstance().Restart();
+		OnGameStart(hDlg);
+		break;
+	case IDM_SPEED_UP:
+		timer.SpeedUp();
+		break;
+	case IDM_SPEED_DOWN:
+		timer.SpeedDown();
 		break;
 	}
 }
@@ -122,7 +146,7 @@ void OnTimerFlash(HWND hwnd) {
 
 void MainDlg_OnTimer(HWND hwnd, UINT id) {
 	switch (id) {
-	case TIMER_FLASH: 
+	case FlashTimer::TIMER_FLASH: 
 		OnTimerFlash(hwnd);
 		break;
 	}
@@ -154,8 +178,9 @@ void MainDlg_OnChar(HWND hwnd, TCHAR ch, int cRepeat) {
 }
 
 void OnGameOver(HWND hDlg) {
-	KillTimer(hDlg, TIMER_FLASH);
+	timer.Stop();
 }
+
 
 INT_PTR CALLBACK DialogProc(
 	HWND hDlg,  // handle to dialog box
@@ -176,6 +201,9 @@ INT_PTR CALLBACK DialogProc(
 
 	case WM_GAME_OVER:
 		OnGameOver(hDlg);
+		break;
+	case WM_GAME_START:
+		OnGameStart(hDlg);
 		break;
 	}
 	return FALSE;

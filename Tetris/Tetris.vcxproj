@@ -138,8 +138,10 @@
     <ClInclude Include="corn_debug.h" />
     <ClInclude Include="CGame.h" />
     <ClInclude Include="CShape.h" />
+    <ClInclude Include="FlashTimer.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="Vector2D.h" />
   </ItemGroup>
   <ItemGroup>
@@ -153,7 +155,9 @@
     <ClCompile Include="corn_debug.cpp" />
     <ClCompile Include="CGame.cpp" />
     <ClCompile Include="CShape.cpp" />
+    <ClCompile Include="FlashTimer.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Vector2D.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
